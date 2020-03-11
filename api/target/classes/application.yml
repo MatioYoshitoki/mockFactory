@@ -1,0 +1,23 @@
+#测试环境配置
+server:
+  port: 8880
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: mock-factory-api
+  profiles:
+      active: test
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+service-url:
+  gateway-service: http://mock-factory-gateway-9527
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8881/eureka/

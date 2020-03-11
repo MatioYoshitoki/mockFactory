@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>MockFactory - 我的文件</title>
+    <meta name="description" content="专注于前后端分离">
+    <meta name="keywords" content="前后端分离方案">
+    <meta name="renderer" content="webkit">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">-->
+    <link rel="stylesheet" href="css/global.css" type="text/css"/>
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="css/mockCss.css" type="text/css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/mockFactory.js"></script>
+    <script type="text/javascript" src="js/upload.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
+</head>
+<body>
+<header>
+    <a href="/" id="mock_logo-link">
+        <img class="mock_logo" src="image/whiteLogo.png"/>
+        <p class="mock_title">MockFactory</p>
+    </a>
+    <div class="right-item">
+        <div id="user-logo" class="user-logo">
+            <img id="avatar" src='https://accounts.processon.com/uphoto/6/270/5b189cf7e4b02e4b26fa1e6a.png'/>
+        </div>
+        <div class="notice-icon">
+            <div class="icon-warp">
+                <span class="icons">&#xe69f;</span>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="con-left">
+    <div class="left-box">
+        <a id="new-file" class="button new-file" onclick="fileWindow()">新建</a>
+    </div>
+    <a id="now" href="javascript:;" data-nav="diagrams" class="active">
+        <span class="icons">&#xe687;</span>
+        <label>我的文件</label>
+    </a>
+    <a id="history" href="javascript:;" data-nav="diagrams" class="active">
+        <span class="icons"></span>
+        <label>历史版本</label>
+    </a>
+
+</div>
+<div class="con-right">
+
+    <div class="dir">
+        <div id="loadBoard" style="background: white;opacity: 0.8;height: 100%;width: 100%;text-align: center;display: none">
+            <img style="position: relative;top: 50%" src="image/loading.gif">
+        </div>
+        <span class="item" data-f-id="root">我的文件</span>
+        <!--        <span title="List View" id="dir_sort" class="icons"></span>-->
+        <div title="排序" id="sort_by" class="icons">&#xe6a1;</div>
+
+        <div id="scrollBox" class="stripe">
+            <div id="firstFlexBox" class="flexBox">
+                <div id="addBox" class="addBox"></div>
+            </div>
+        </div>
+
+        <div id="historyScrollBox" class="stripe" style="display: none">
+            <!--<div id="firstFlexBox" class="flexBox">-->
+                <!--<div id="addBox" class="addBox"></div>-->
+            <!--</div>-->
+        </div>
+
+
+        <ul class="menu" id="sort_by_menu" style="display: none">
+            <li data-sort="title">
+                <span class="icons">&#xe658;</span>
+                <span>标题</span>
+            </li>
+            <li data-sort="lastModify">
+                <span class="icons"></span>
+                <span>最后修改时间</span>
+            </li>
+            <li data-sort="free">
+                <span class="icons"></span>
+                <span>自定义排序</span>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="left-bottom-con">
+    <div>
+        <a>联系qq:1145935303</a>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function refresh() {
+        checkToken();
+        getManifestList();
+    }
+
+    window.onload = function(){
+        refresh();
+    }
+
+</script>
+<script type="text/javascript">
+
+    initUpload();
+
+</script>
+<div id="tipWindow" class="tipWindow">
+    <div class="appear" style="font-size: 30px;">
+        请完善接口清单信息
+    </div>
+    <div class="appear" style="margin-top: 20px">
+        <label class="appear">清单名称:</label>
+        <input class="appear" id="tipName" type="text">
+    </div>
+    <div class="appear" style="margin-top: 20px">
+        <label class="appear">监听端口:</label>
+        <input class="appear" id="tipPort" type="text">
+    </div>
+    <div class="appear" style="margin-top: 20px">
+        <div class="appear" style="margin-top: 0px">文件类型:</div>
+        <img class="appear" id="fileImage" style="width: 10%" src="image/excel.png">
+        <div class="appear" id="fileName"></div>
+    </div>
+    <div class="appear">
+        <a id="submit" class="button appear">提交</a>
+    </div>
+</div>
+<div id="fog" class="fog"></div>
+</body>
+</html>

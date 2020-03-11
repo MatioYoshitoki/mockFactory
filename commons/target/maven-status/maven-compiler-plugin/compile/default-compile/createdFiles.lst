@@ -1,0 +1,8 @@
+com/mock/common/global/CloudCode.class
+com/mock/common/global/CloudGlobal.class
+com/mock/common/aop/MockAop.class
+com/mock/common/pojo/UserPo.class
+com/mock/common/exception/ExceptionPlus.class
+com/mock/common/util/SignVerification.class
+com/mock/common/annotion/Permission.class
+com/mock/common/pojo/JsonPublic.class

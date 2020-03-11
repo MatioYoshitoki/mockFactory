@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MockFactory</title>
+    <link rel="stylesheet" href="css/global.css" type="text/css"/>
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="css/mockCss.css" type="text/css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/mockFactory.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
+</head>
+<body style="overflow: scroll;height: 100%">
+
+    <div id="firstBack" style="background: #4D4D4D;width: 100%;height: 100%;left:0; top:0;text-align: center">
+        <div style="text-align: center;padding: 1%">
+            <a class="topBarBtn rightLine" href="#" onclick="showRegisterWindow()">注册</a>
+            <a class="topBarBtn rightLine" href="#" onclick="showLoginWindow()">登录</a>
+            <a class="topBarBtn">介绍</a>
+        </div>
+        <div style="color: #f0f0f0;text-align: center;font-size: 64px;font-family: 'Malayalam MN';margin-top: 10%">MockFactory</div>
+        <div style="color: #f0f0f0;text-align: center;font-size: 32px;font-family: 'Malayalam MN';">让前端工程师起飞</div>
+        <div style="text-align: center;font-size: 20px;font-family: 'Malayalam MN';background: white;width: 100px;height: 30px;border-radius: 5px;margin: 10% auto 0;">
+            <a style="color: #4D4D4D;text-decoration: none" href="#" onclick="showRegisterWindow()">开始</a>
+        </div>
+    </div>
+    <div class="desc">
+        <div class="context">
+            <div class="descCard">
+                <img src="image/gou.png" class="descImage">
+                <div class="descImageTitle">
+                    <div class="descTitle">生成接口清单</div>
+                    <div class="descContent">通过excel文件生成并展示清晰明了的接口清单</div>
+                </div>
+            </div>
+            <div class="descCard">
+                <img src="image/gou.png" class="descImage">
+                <div class="descImageTitle">
+                    <div class="descTitle">生成模拟服务器</div>
+                    <div class="descContent">通过excel文件生成node.js模拟服务器</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="context">
+            <div class="descCard">
+                <img src="image/gou.png" class="descImage">
+                <div class="descImageTitle">
+                    <div class="descTitle">完全独立于后端</div>
+                    <div class="descContent">前端工程师可完全脱离后端进行接口调试</div>
+                </div>
+            </div>
+            <div class="descCard">
+                <img src="image/gou.png" class="descImage">
+                <div class="descImageTitle">
+                    <div class="descTitle">操作简单</div>
+                    <div class="descContent">无需代码知识便可生成模拟服务器</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tipWindow" class="tipWindow" style="width: 508px;height: 300px;top: 50%;left: 30%;margin-top: -150px;display: none">
+        <div class="appear" style="font-size: 40px;">
+            登录
+        </div>
+        <div class="appear" style="margin-top: 30px">
+            <label class="appear">账号:</label>
+            <input class="appear" id="userID" type="text" placeholder="mockID/手机号/邮箱">
+        </div>
+        <div class="appear" style="margin-top: 20px">
+            <label class="appear">密码:</label>
+            <input class="appear" id="password" type="password" placeholder="密码">
+        </div>
+        <div class="appear">
+            <a id="login" class="button appear" onclick="login()">登录</a>
+        </div>
+    </div>
+    <div id="registerWindow" class="tipWindow" style="width: 508px;height: 440px;top: 50%;margin-top: -220px;left: 50%;margin-left: -280px;display: none">
+        <div class="appear" style="font-size: 40px;">
+            注册
+        </div>
+        <div class="appear" style="margin-top: 30px">
+            <label class="appear">手 机 号:</label>
+            <input class="appear" id="phoneNo" type="text" placeholder="手机号">
+        </div>
+        <div class="appear" style="margin-top: 20px">
+            <label class="appear">昵&nbsp;&nbsp;&nbsp;&nbsp;称:</label>
+            <input class="appear" id="showName" type="text" placeholder="昵称">
+        </div>
+        <div class="appear" style="margin-top: 20px">
+            <label class="appear">验&nbsp;证&nbsp;码:</label>
+            <input class="appear" id="checkCode" type="text" placeholder="验证码">
+
+        </div>
+        <div class="appear" style="margin-top: 20px">
+            <label class="appear">密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
+            <input class="appear" id="pwd" type="password" placeholder="密码">
+        </div>
+        <div class="appear" style="margin-top: 20px">
+            <label class="appear">确认密码:</label>
+            <input class="appear" id="pwdRep" type="password" placeholder="密码">
+        </div>
+        <div class="appear">
+            <a id="btnSendCode" class="button appear" onclick="sendCheck()">发送验证码</a>
+        </div>
+        <div class="appear">
+            <a id="register" class="button appear" onclick="register()">注册</a>
+        </div>
+    </div>
+    <div id="fog" class="fog" style="display: none"></div>
+    <script type="text/javascript">
+
+        window.οnlοad=function (){
+            let token = $.cookie("token");
+
+            if (token!=null){
+                $(location).attr('href', '/homePage');
+            }
+        };
+
+        function sendCheck() {
+            getCheckCodeTime();
+            send();
+        }
+
+    </script>
+</body>
+</html>

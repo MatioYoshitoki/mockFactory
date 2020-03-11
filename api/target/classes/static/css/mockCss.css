@@ -1,0 +1,269 @@
+.tipWindow{
+    width: 50%;
+    height: 50%;
+    text-align: center;
+    background: white;
+    color: #4386f5;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    z-index: 9999;
+    display: none;
+    box-shadow: rgb(171, 171, 171) 0px 0px 10px 0px;
+    animation: tipWindow 300ms;
+    -moz-animation:tipWindow 300ms; /* Firefox */
+    -webkit-animation:tipWindow 300ms; /* Safari and Chrome */
+    -o-animation:tipWindow 300ms; /* Opera */
+}
+
+.fog{
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    background: black;
+    opacity: 0.4;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.appear{
+    opacity: 1;
+    animation: appear 500ms;
+    -moz-animation:appear 500ms; /* Firefox */
+    -webkit-animation:appear 500ms; /* Safari and Chrome */
+    -o-animation:appear 500ms; /* Opera */
+}
+
+@keyframes tipWindow
+{
+    from {
+        /*width:0%;*/
+        /*height: 0%;*/
+        /*top: 50%;*/
+        /*left: 50%;*/
+        opacity: 0;
+    }
+    to {
+        /*width: 50%;*/
+        /*height: 50%;*/
+        /*top: 25%;*/
+        /*left: 25%;*/
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes tipWindow /* Firefox */
+{
+    from {
+        width:0%;
+        height: 0%;
+        top: 50%;
+        left: 50%;
+    }
+    to {
+        width: 50%;
+        height: 50%;
+        top: 25%;
+        left: 25%;
+    }
+}
+
+@-webkit-keyframes tipWindow /* Safari and Chrome */
+{
+    from {
+        /*width:0%;*/
+        /*height: 0%;*/
+        /*top: 50%;*/
+        /*left: 50%;*/
+        opacity: 0;
+    }
+    to {
+        /*width: 50%;*/
+        /*height: 50%;*/
+        /*top: 25%;*/
+        /*left: 25%;*/
+        opacity: 1;
+    }
+}
+
+@-o-keyframes tipWindow /* Opera */
+{
+    from {
+        width:0%;
+        height: 0%;
+        top: 50%;
+        left: 50%;
+    }
+    to {
+        width: 50%;
+        height: 50%;
+        top: 25%;
+        left: 25%;
+    }
+}
+
+@keyframes appear
+{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes appear /* Firefox */
+{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes appear /* Safari and Chrome */
+{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes appear /* Opera */
+{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #c0c0c0;
+    text-align: center;
+    width: 70%;
+    margin: 20px auto auto;
+}
+
+th,td {
+    border: 1px solid #d0d0d0;
+    color: #4D4D4D;
+    padding: 10px;
+}
+
+th {
+    background-color: #4386f5;
+    font: bold 16px "微软雅黑";
+    color: #fff;
+}
+
+td {
+    font: 14px "微软雅黑";
+}
+
+tbody tr {
+    background-color: #f0f0f0;
+}
+
+tbody tr:hover {
+    cursor: pointer;
+    background-color: #fafafa;
+}
+
+div{
+    color: #4D4D4D;
+}
+html{
+    height:100%;
+}
+body{
+    margin: 0px;
+    height: 100%;
+    display: block;
+}
+.context{
+    width: 100%;
+    height: 200px;
+    display:-webkit-flex;
+    display: flex;
+    justify-content: space-around;
+    padding-top: 50px;
+
+}
+.descImageTitle{
+    /*display: flex;*/
+    padding-left: 10px;
+    /*justify-content: flex-start;*/
+    /*flex-wrap: wrap-reverse;*/
+}
+.descImage{
+    margin-top: 10px;
+    width: 28px;
+    height: 28px;
+}
+.descCard{
+    width: 400px;
+    display: flex;
+}
+.descTitle{
+    font-weight: bold;
+}
+.descContent{
+
+}
+.desc{
+    background: white;
+    /*margin-top: 100px;*/
+    /*margin-left: 50px;*/
+    /*margin-right: 50px*/
+}
+
+.topBarBtn{
+    font-size: 16px;
+    display: inline-block;
+    color: white;
+    padding: 0 20px;
+}
+
+.rightLine{
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+.downloadMock{
+    position: absolute;
+    z-index: 999;
+    width: 60px;
+    height:60px;
+    background: #4386f5;
+    bottom: 120px;
+    right: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+.editMock{
+    position: absolute;
+    z-index: 999;
+    width: 60px;
+    height:60px;
+    background: #4386f5;
+    bottom: 200px;
+    right: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+.stripe{
+    padding-bottom: 10px;
+    padding-top: 10px;
+    height: 85%;
+    background: linear-gradient(90deg, rgba(77, 77, 77, 0.5) 10%,transparent 0),
+    linear-gradient(rgba(77, 77, 77, 0.5) 10%,transparent 0);
+    background-size: 10px 10px;
+    overflow: scroll;
+}

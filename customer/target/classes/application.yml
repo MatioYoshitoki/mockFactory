@@ -1,0 +1,17 @@
+#测试环境配置
+server:
+  port: 8882
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: mock-factory-customer-8882
+  profiles:
+      active: test
+
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8881/eureka/

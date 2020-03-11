@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mock.core.dao.ManifestMapper" >
+
+    <insert id="addManifest" parameterType="com.mock.core.pojo.ManifestPo">
+        insert into manifest (manifestID, manifestName, port, groupID, authorID) values (#{manifestID}, #{manifestName}, #{port}, #{groupID}, #{authorID})
+    </insert>
+
+    <insert id="addInterfaceParams" parameterType="com.mock.core.pojo.InterfaceParamsPo">
+        insert into interface_params (paramID, paramName, interfaceID, checkNull, nullReturn, paramType, mark) values (#{paramID}, #{paramName}, #{interfaceID}, #{checkNull}, #{nullReturn}, #{paramType}, #{mark})
+    </insert>
+    
+    <insert id="addInterface" parameterType="com.mock.core.pojo.InterfacePo">
+        insert into interface (interfaceID, manifestID, interfaceName, interfaceType, requestMap, mockPath) values (#{interfaceID}, #{manifestID}, #{interfaceName}, #{interfaceType}, #{requestMap}, #{mockPath})
+    </insert>
+
+    <insert id="addReturnContent" parameterType="com.mock.core.pojo.ReturnContentPo">
+        insert into return_content (returnContentID, interfaceID, mockContent, viewContent) values (#{returnContentID}, #{interfaceID}, #{mockContent}, #{viewContent})
+    </insert>
+
+    <select id="getManifestList" resultType="com.mock.core.pojo.ManifestSummaryPo">
+        select
+          manifestID as manifestID,
+          'excel' as manifestType,
+          manifestName as manifestName,
+          port as port
+        from manifest
+        where authorID=#{userID}
+        <if test="manifestID != null">
+            and manifestID=#{manifestID}
+        </if>
+        order by createTime
+    </select>
+
+    <select id="getInterfaceList" resultType="com.mock.core.pojo.InterfacePo">
+        select manifestID, interfaceID, interfaceName, interfaceType, requestMap, createTime, updateTime
+        from interface
+        where manifestID=#{manifestID}
+        order by requestMap
+    </select>
+
+    <select id="getInterfaceParams" resultType="com.mock.core.pojo.InterfaceParamsPo">
+        select paramID, paramName, interfaceID, checkNull, nullReturn, paramType, mark from interface_params where interfaceID=#{interfaceID}
+        order by paramName
+    </select>
+
+    <select id="getInterfaceReturnContent" resultType="java.lang.String">
+        select viewContent from return_content where interfaceID=#{interfaceID}
+    </select>
+</mapper>

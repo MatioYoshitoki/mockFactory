@@ -1,0 +1,279 @@
+.con-left {
+    position: fixed;
+    width: 208px;
+    height: calc(100% - 40px);
+    left: 0;
+    z-index: 2
+}
+
+.con-left > a:first-child {
+    margin-top: -10px
+}
+
+.con-left > a {
+    height: 45px;
+    line-height: 45px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    color: #888;
+    width: 140px;
+    margin: 0 auto
+}
+
+.con-left > a.active {
+    font-weight: 700;
+    color: #555
+}
+
+.con-left > a.active .icons {
+    font-weight: 400
+}
+
+.con-left > a .icons {
+    font-size: 18px;
+    margin-right: 12px;
+    vertical-align: -1px
+}
+
+.con-left > a label {
+    display: inline-block;
+    min-width: 100px;
+    text-align: left;
+    cursor: pointer
+}
+
+.con-right {
+    height: calc(100% - 40px);
+    padding-left: 230px;
+    overflow: hidden;
+    min-width: 320px;
+    position: relative;
+    z-index: 1
+}
+
+.dir{
+    position: relative;
+    color: #666;
+    font-size: 12px;
+    position: relative;
+    height: 100%;
+    padding-top: 16px;
+    padding-right: 28px;
+    line-height: 28px;
+}
+
+.flexBox{
+    margin-top: 10px;
+    display: flex;
+}
+
+
+.dir .item {
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid transparent;
+    -ms-transition: transform .2s;
+    -moz-transition: transform .2s;
+    -webkit-transition: transform .2s;
+    -o-transition: transform .2s;
+    transition: transform .2s;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 140px;
+    vertical-align: top;
+    padding: 0 5px 0 0;
+}
+
+.dir .item.active {
+    color: #666;
+    font-weight: 400;
+    cursor: default;
+    vertical-align: middle
+}
+
+.dir .item.enter {
+    border: 1px solid #4386f5
+}
+
+.dir .icons .icons {
+    font-size: 18px;
+    vertical-align: -3px;
+    margin: 0 0
+}
+
+.dir .right {
+    float: right;
+    margin-right: 44px;
+    font-size: 18px
+}
+
+.dir #dir_sort {
+    cursor: pointer;
+    float: right
+}
+
+.dir #sort_by {
+    cursor: pointer;
+    float: right;
+    margin-right: 20px
+}
+
+.dir #sort_by_menu {
+    width: 101px;
+    z-index: 3;
+    right: 8px;
+    display: none
+}
+
+.dir #sort_by_menu .icons{
+    font-size: 15px;
+    display: inline-block;
+    width: 30px
+}
+
+
+
+.left-bottom-con {
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+    height: 42px;
+    width: 204px;
+    text-align: left;
+    z-index: 2
+}
+
+.left-bottom-con a {
+    display: inline-block;
+    margin-right: 15px;
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: #999
+}
+
+
+.button#new-file {
+    margin-left: 36px;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    width: 100px
+}
+
+
+.button#new-file .icons {
+    vertical-align: -1px
+}
+
+
+.menu {
+    position: absolute;
+    min-width: 160px;
+    background: #fff;
+    z-index: 111;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 6px #ccc;
+    border-radius: 3px
+}
+
+
+
+.menu:before {
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    top: -16px;
+    border: 8px solid transparent;
+    border-bottom: 8px solid #ccc;
+    content: "";
+    width: 0;
+    height: 0
+}
+
+.menu:after {
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    top: -15px;
+    border: 8px solid transparent;
+    border-bottom: 8px solid #fff;
+    content: "";
+    width: 0;
+    height: 0
+}
+
+.menu ul, li {
+    list-style: none
+}
+
+.menu li {
+    padding: 7px 12px;
+    cursor: default;
+    color: #444;
+    line-height: 20px;
+    position: relative;
+    display: flex;
+    align-items: center
+}
+
+.menu li .icons {
+    display: inline-block;
+    vertical-align: middle;
+    margin: -1px 6px 0 0
+}
+
+.menu li:hover {
+    background: #f5f5f5;
+    color: #000
+}
+
+.menu {
+    padding: 8px 0
+}
+
+.menu li.sep {
+    margin: 3px 0;
+    padding: 0;
+    height: 1px;
+    background: #e7e7e7
+}
+
+.menu li a {
+    display: block
+}
+
+
+.addBox{
+    text-align: center;
+    width: 127px;
+    height: 250px;
+    padding: 10px;
+    margin-left: 2%;
+    background: #f0f0f0;
+    box-shadow: rgb(171, 171, 171) 0px 0px 10px 0px;
+}
+
+
+.boxBoard{
+    text-align: center;
+    width: 100%;
+    height: 250px;
+}
+
+.upload{
+    width: 100%;
+    height: 100%;
+}
+
+
+.excelImage{
+    width: 100%;
+}
+
+.fourDColor{
+    color: #4D4D4D;
+}

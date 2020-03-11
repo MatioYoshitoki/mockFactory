@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接口清单详情</title>
+    <style type="text/css">
+        body{
+            text-align: center;
+        }
+    </style>
+
+    <link rel="stylesheet" href="css/global.css" type="text/css"/>
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="css/mockCss.css" type="text/css"/>
+    <link rel="stylesheet" href="css/jquery.jsonview.css" type="text/css"/>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
+    <script type="text/javascript" src="js/jquery.jsonview.js"></script>
+    <script type="text/javascript" src="js/mockFactory.js"></script>
+
+</head>
+<body>
+    <div class="downloadMock">
+        <a id="mockDownload" href="#">
+            <img style="width: 36px;height: 36px;" src="image/download.png">
+            <div style="color: white;font-size: 10px">下载mock</div>
+        </a>
+    </div>
+    <header>
+        <a href="/" id="mock_logo-link">
+            <img class="mock_logo" src="image/back.png"/>
+            <p id="mockTitle" class="mock_title"></p>
+        </a>
+        <div class="right-item">
+            <div id="user-logo" class="user-logo">
+                <img src='https://accounts.processon.com/uphoto/6/270/5b189cf7e4b02e4b26fa1e6a.png'/>
+            </div>
+            <div class="notice-icon">
+                <div class="icon-warp">
+                    <span class="icons">&#xe69f;</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="overflow: scroll;height: 92%;width: 100%">
+        <table>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>参数名</th>
+                <th>参数类型</th>
+                <th>是否可为空</th>
+            </tr>
+            </thead>
+            <tbody id="J_TbData">
+            </tbody>
+        </table>
+        <table>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>条件</th>
+                <th>返回值</th>
+            </tr>
+            </thead>
+            <tbody id="J_TbData_2">
+            </tbody>
+        </table>
+
+    </div>
+
+
+    <script type="text/javascript">
+        getInterfaceDetail(getQueryString("manifestID"), getQueryString("interfaceID"));
+        window.onload = function(){
+            $("#mockTitle").html(decodeURI(getQueryString("interfaceName")));
+            $("#mock_logo-link").attr("href","/interfaceList?manifestID="+getQueryString("manifestID")+"&manifestName="+decodeURI(getQueryString("manifestName")));
+            $("#mockDownload").attr("href", "/static/mock/"+getQueryString("manifestID")+"_node.js");
+        }
+    </script>
+</body>
+</html>

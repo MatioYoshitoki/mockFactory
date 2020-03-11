@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mock.customer.dao.UserMapper" >
+
+
+    <resultMap id="userMap" type="com.mock.common.pojo.UserPo">
+        <id column="userID" property="userID" jdbcType="VARCHAR"/>
+        <id column="showName" property="showName" jdbcType="VARCHAR"/>
+        <id column="avatar" property="avatar" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+
+    <select id="getUserByPhoneLogin" resultMap="userMap" parameterType="java.lang.String">
+        select
+            uli.userID as userID,
+            u.showName as showName,
+            u.avatar as avatar
+        from user_login_info uli
+        left join user_base u on uli.userID = u.userID
+        where
+        uli.loginPhoneNo=#{phoneNo}
+        and uli.loginPasswords=#{password}
+    </select>
+
+    <select id="getUserByEmailLogin" resultMap="userMap" parameterType="java.lang.String">
+        select
+            uli.userID as userID,
+            u.showName as showName,
+            u.avatar as avatar
+        from user_login_info uli
+        left join user_base u on uli.userID = u.userID
+        where
+        uli.loginEmail=#{email}
+        and uli.loginPasswords=#{password}
+    </select>
+
+    <select id="checkPhoneNo" resultType="java.lang.String">
+        select userID from user_login_info where loginPhoneNo=#{phoneNo}
+    </select>
+
+    <insert id="addUser" parameterType="java.lang.String">
+        insert into user_base (userID, showName, phoneNumber) values (#{userID}, #{showName}, #{phoneNo})
+    </insert>
+
+    <insert id="addPhoneUserLoginInfo" parameterType="java.lang.String">
+        insert into user_login_info (userID, loginPhoneNo, loginPasswords) values (#{userID}, #{phoneNo}, #{password})
+    </insert>
+</mapper>

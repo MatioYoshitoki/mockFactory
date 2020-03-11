@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mock.file.dao.ManifestMapper" >
+
+    <insert id="addManifest" parameterType="com.mock.file.pojo.ManifestPo">
+        insert into manifest (manifestID, manifestName, port, groupID, authorID) values (#{manifestID}, #{manifestName}, #{port}, #{groupID}, #{authorID})
+    </insert>
+
+    <insert id="addInterfaceParams" parameterType="com.mock.file.pojo.InterfaceParamsPo">
+        insert into interface_params (paramID, paramName, interfaceID, checkNull, nullReturn, paramType, mark) values (#{paramID}, #{paramName}, #{interfaceID}, #{checkNull}, #{nullReturn}, #{paramType}, #{mark})
+    </insert>
+    
+    <insert id="addInterface" parameterType="com.mock.file.pojo.InterfacePo">
+        insert into interface (interfaceID, manifestID, interfaceName, interfaceType, requestMap, mockPath) values (#{interfaceID}, #{manifestID}, #{interfaceName}, #{interfaceType}, #{requestMap}, #{mockPath})
+    </insert>
+
+    <insert id="addReturnContent" parameterType="com.mock.file.pojo.ReturnContentPo">
+        insert into return_content (returnContentID, interfaceID, mockContent, viewContent) values (#{returnContentID}, #{interfaceID}, #{mockContent}, #{viewContent})
+    </insert>
+</mapper>

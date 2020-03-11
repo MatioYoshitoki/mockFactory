@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接口清单详情</title>
+    <link rel="stylesheet" href="css/global.css" type="text/css"/>
+    <link rel="stylesheet" href="css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="css/mockCss.css" type="text/css"/>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
+    <style type="text/css">
+        body{
+            text-align: center;
+        }
+
+    </style>
+    <script type="text/javascript">
+        getInterfaceList(getQueryString("manifestID"));
+        window.onload = function(){
+            $("#mockTitle").html(decodeURI(getQueryString("manifestName")));
+            $("#mockDownload").attr("href", "/static/mock/"+getQueryString("manifestID")+"_node.js");
+        }
+    </script>
+
+</head>
+<body>
+    <header>
+        <a href="/homePage" id="mock_logo-link">
+            <img class="mock_logo" src="image/back.png"/>
+            <p id="mockTitle" class="mock_title"></p>
+        </a>
+        <div class="right-item">
+            <div id="user-logo" class="user-logo">
+                <img src='https://accounts.processon.com/uphoto/6/270/5b189cf7e4b02e4b26fa1e6a.png'/>
+            </div>
+            <div class="notice-icon">
+                <div class="icon-warp">
+                    <span class="icons">&#xe69f;</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <table>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>接口名</th>
+            <th>接口类型</th>
+            <th>地址</th>
+            <th>详情</th>
+        </tr>
+        </thead>
+        <tbody id="J_TbData">
+        </tbody>
+    </table>
+    <div class="downloadMock">
+        <a id="mockDownload" href="#">
+            <img style="width: 36px;height: 36px;" src="image/download.png">
+            <div style="color: white;font-size: 10px">下载mock</div>
+        </a>
+    </div>
+    <div class="editMock">
+        <a id="edit" href="#">
+            <img style="width: 36px;height: 36px;" src="image/edit.png">
+            <div style="color: white;font-size: 10px">编辑</div>
+        </a>
+    </div>
+    <div id="tipWindow" class="tipWindow">
+        <div class="appear" style="font-size: 30px;">
+            请上传新的接口清单信息
+        </div>
+        <div class="appear" style="margin-top: 20px">
+            <label class="appear">清单名称:</label>
+            <input class="appear" id="tipName" type="text">
+        </div>
+        <div class="appear" style="margin-top: 20px">
+            <label class="appear">监听端口:</label>
+            <input class="appear" id="tipPort" type="text">
+        </div>
+        <div class="appear" style="margin-top: 20px">
+            <div class="appear" style="margin-top: 0px">文件类型:</div>
+            <img class="appear" id="fileImage" style="width: 10%" src="image/excel.png">
+            <div class="appear" id="fileName"></div>
+        </div>
+        <div class="appear">
+            <a id="submit" class="button appear">提交</a>
+        </div>
+    </div>
+    <div id="fog" class="fog"></div>
+    <script>
+        function edit() {
+            var formData={'manifestID':getQueryString("manifestID")};
+            $.ajax({
+                type: 'post',
+                url: "/mock/getManifestBase", //上传文件的请求路径必须是绝对路劲
+                data: formData,
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if (data.code == 10000) {
+                        refresh();
+                        initUpload();
+                    }
+                    return;
+                },
+                error: function () {
+                    alert("上传失败");
+                    initUpload()
+                    return;
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
