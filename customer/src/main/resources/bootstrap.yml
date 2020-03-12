@@ -1,0 +1,24 @@
+server:
+  port: 8882
+
+spring:
+  application:
+    name: mock-factory-customer-8882
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: mock-factory-cloud
+        group: CUSTOMER_GROUP
+        prefix: mock-factory-customer
+
+
+management:
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

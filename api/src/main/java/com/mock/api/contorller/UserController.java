@@ -8,6 +8,7 @@ import com.mock.common.pojo.UserLoginInfo;
 import com.mock.common.pojo.UserRegisterPo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(value = "/user")
 @Slf4j
+@RefreshScope
 public class UserController {
 
     @Value("${service-url.gateway-service}")

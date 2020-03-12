@@ -1,36 +1,4 @@
 #测试环境配置
-server:
-  port: 9527
-
 spring:
-  application:
-    name: mock-factory-gateway-9527
   profiles:
-    active: test
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enable: true
-      routes:
-        - id: cutomer
-          uri: lb://mock-factory-customer-8882
-          predicates:
-            - Path=/user/**
-        - id: core
-          uri: lb://mock-factory-core-8881
-          predicates:
-            - Path=/mock/**
-        - id: file
-          uri: lb://mock-factory-file-8884
-          predicates:
-            - Path=/file/**
-        - id: message
-          uri: lb://mock-factory-message-8883
-          predicates:
-            - Path=/message/**
-
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8881/eureka/
+    active: dev

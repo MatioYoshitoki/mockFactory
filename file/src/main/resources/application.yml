@@ -1,12 +1,4 @@
 #测试环境配置
-server:
-  port: 8884
-  servlet:
-    context-path: /
-
 spring:
-  application:
-    name: mock-factory-file-8884
   profiles:
-      active: test
-
+    active: dev

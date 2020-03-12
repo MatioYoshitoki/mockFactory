@@ -1,0 +1,24 @@
+server:
+  port: 8881
+
+spring:
+  application:
+    name: mock-factory-core-8881
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: mock-factory-cloud
+        group: CORE_GROUP
+        prefix: mock-factory-core
+
+
+management:
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

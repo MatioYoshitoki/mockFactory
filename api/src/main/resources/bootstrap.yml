@@ -1,0 +1,23 @@
+server:
+  port: 8880
+
+spring:
+  application:
+    name: mock-factory-api
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: mock-factory-cloud
+        group: API_GROUP
+
+
+management:
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

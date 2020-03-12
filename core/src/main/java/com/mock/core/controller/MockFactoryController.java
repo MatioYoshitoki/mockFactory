@@ -6,6 +6,7 @@ import com.mock.core.annotion.Permission;
 import com.mock.core.service.MockService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @Slf4j
 @RequestMapping("mock")
+@RefreshScope
 public class MockFactoryController {
 
     @Resource

@@ -7,6 +7,7 @@ import com.mock.common.pojo.JsonPublic;
 import com.mock.common.pojo.MockFilePo;
 import com.mock.common.util.PojoUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/mock")
+@RefreshScope
 public class MockFactoryController {
 
 

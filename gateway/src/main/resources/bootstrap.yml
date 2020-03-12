@@ -1,0 +1,23 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: mock-factory-gateway-9527
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: mock-factory-cloud
+        group: GATEWAY_GROUP
+
+
+management:
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

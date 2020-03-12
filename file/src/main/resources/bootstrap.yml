@@ -1,0 +1,24 @@
+server:
+  port: 8884
+
+spring:
+  application:
+    name: mock-factory-file-8884
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: mock-factory-cloud
+        group: FILE_GROUP
+        prefix: mock-factory-file
+
+
+management:
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

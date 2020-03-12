@@ -8,6 +8,7 @@ import com.mock.common.pojo.UserRegisterPo;
 import com.mock.customer.annotion.Permission;
 import com.mock.customer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @Slf4j
 @RequestMapping("user")
+@RefreshScope
 public class UserController {
 
     @Resource
