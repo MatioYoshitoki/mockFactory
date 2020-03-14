@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * json公用类
  * @author matio
@@ -14,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class JsonPublic<T>{
+public class JsonPublic<T> implements Serializable {
 	//返回码
 	private int code;
 	//返回信息

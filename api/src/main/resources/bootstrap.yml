@@ -2,6 +2,7 @@ server:
   port: 8880
 
 spring:
+
   application:
     name: mock-factory-api
   cloud:
@@ -13,10 +14,21 @@ spring:
         file-extension: yaml
         namespace: mock-factory-cloud
         group: API_GROUP
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8080
+      datasource:
+        ds1:
+          nacos:
+            server-addr: localhost:8848
+            dataId: mock-cloud-api-sentinel
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
 
 
 management:
-  endpoint:
   endpoints:
     web:
       exposure:

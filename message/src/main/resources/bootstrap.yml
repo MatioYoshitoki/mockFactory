@@ -1,9 +1,9 @@
 server:
-  port: 9527
+  port: 8883
 
 spring:
   application:
-    name: mock-factory-gateway-9527
+    name: mock-factory-message-8883
   cloud:
     nacos:
       discovery:
@@ -12,7 +12,8 @@ spring:
         server-addr: localhost:8848
         file-extension: yaml
         namespace: mock-factory-cloud
-        group: GATEWAY_GROUP
+        group: MESSAGE_GROUP
+        prefix: mock-factory-message
 
 
 management:
