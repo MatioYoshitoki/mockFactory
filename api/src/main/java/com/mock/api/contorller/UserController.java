@@ -2,19 +2,18 @@ package com.mock.api.contorller;
 
 
 import com.mock.api.annotion.Permission;
-import com.mock.api.service.RestService;
 import com.mock.common.pojo.JsonPublic;
 import com.mock.common.pojo.UserLoginInfo;
 import com.mock.common.pojo.UserRegisterPo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.http.HttpMethod;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by matioyoshitoki on 2020/1/31.

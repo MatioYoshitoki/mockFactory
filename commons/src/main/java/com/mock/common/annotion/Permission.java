@@ -1,4 +1,4 @@
-package com.mock.core.annotion;
+package com.mock.common.annotion;
 
 import java.lang.annotation.*;
 

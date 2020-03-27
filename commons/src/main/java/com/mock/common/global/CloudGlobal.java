@@ -15,4 +15,8 @@ public class CloudGlobal {
 	/*阿里云短信密码*/
 	public static String SECRET = "EGMAfUycIgN5vUiX6Vo7lPQkNtQsc2";
 
+	public static final String TOKEN = "token";
+
+	public static final String USER_PO = "userPo";
+
 }

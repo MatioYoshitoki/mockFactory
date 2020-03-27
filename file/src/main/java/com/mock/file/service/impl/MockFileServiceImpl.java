@@ -1,9 +1,7 @@
 package com.mock.file.service.impl;
 
-import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mock.common.exception.ExceptionPlus;
@@ -11,6 +9,7 @@ import com.mock.common.global.CloudCode;
 import com.mock.common.pojo.*;
 import com.mock.common.util.Base64Util;
 import com.mock.common.util.MyStrUtil;
+import com.mock.common.util.RedisUtil;
 import com.mock.file.dao.ManifestMapper;
 import com.mock.file.pojo.*;
 import com.mock.file.service.MockFileService;
@@ -22,7 +21,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
@@ -97,7 +95,7 @@ public class MockFileServiceImpl implements MockFileService {
     }
 
     @Override
-    public JsonPublic getMockByFile(MockFilePo mockFilePo, String token) throws Exception {
+    public JsonPublic getMockByFile(MockFilePo mockFilePo, String token) throws ExceptionPlus {
 
         String fileBase64 = mockFilePo.getFile();
         String fileName = mockFilePo.getFileName();
@@ -106,7 +104,11 @@ public class MockFileServiceImpl implements MockFileService {
 
         String extString = fileName.substring(fileName.lastIndexOf("."));
 
-        UserPo userPo = getUserPoFromRedis(token);
+        UserPo userPo = RedisUtil.getFromRedis(jedisPool, token, UserPo.class);
+        if (userPo==null){
+            throw new ExceptionPlus(CloudCode.WRONG_TOKEN, CloudCode.WRONG_TOKEN_MESSAGE);
+        }
+
         InputStream is = Base64Util.base64ToInputStream(fileBase64);
 
         try {
@@ -171,25 +173,9 @@ public class MockFileServiceImpl implements MockFileService {
         return new JsonPublic();
     }
 
-    private UserPo getUserPoFromRedis(String token) throws ExceptionPlus {
-        Jedis jedis = null;
-        UserPo userPo;
-        try {
-            jedis = jedisPool.getResource();
-            if (!jedis.exists(token)){
-                throw new ExceptionPlus(CloudCode.WRONG_TOKEN, CloudCode.WRONG_TOKEN_MESSAGE);
-            }
-            userPo = JSON.parseObject(jedis.get(token), UserPo.class);
-        }finally {
-            if (jedis!=null){
-                jedis.close();
-            }
-        }
-        return userPo;
-    }
 
 
-    private static void mockAns(String returnContentStr, List<ParamsDetailPo> paramsDetailPos) throws Exception {
+    private static void mockAns(String returnContentStr, List<ParamsDetailPo> paramsDetailPos) {
         String[] returnContentList = returnContentStr.split("\n");
 
         String startFlag = null;
@@ -227,11 +213,11 @@ public class MockFileServiceImpl implements MockFileService {
                 List<ParamsDetailPo> tmpList = new ArrayList<>();
 
 
-                StringBuffer subMap = new StringBuffer();
+                StringBuilder subMap = new StringBuilder();
                 for (int j=i+1;j<returnContentList.length;j++){
                     startFlag = getStartFlag(startFlag, returnContentList[j]);
                     if (returnContentList[j].startsWith(startFlag)){
-                        subMap.append(returnContentList[j].substring(startFlag.length())+"\n");
+                        subMap.append(returnContentList[j].substring(startFlag.length())).append("\n");
                         i=j+1;
                         break;
                     }
@@ -249,14 +235,14 @@ public class MockFileServiceImpl implements MockFileService {
                 paramsDetail.setNullReturn(nullReturn);
                 paramsDetail.setParamType(contentType);
                 List<ParamsDetailPo> tmpList = new ArrayList<>();
-                StringBuffer subMap = new StringBuffer();
+                StringBuilder subMap = new StringBuilder();
                 for (int j=i+1;j<returnContentList.length;j++){
                     startFlag = getStartFlag(startFlag, returnContentList[j]);
                     if (!returnContentList[j].startsWith(startFlag)){
                         i=j+1;
                         break;
                     }
-                    subMap.append(returnContentList[j].substring(startFlag.length())+"\n");
+                    subMap.append(returnContentList[j].substring(startFlag.length())).append("\n");
                 }
 
                 mockAns(subMap.toString(), tmpList);
@@ -275,7 +261,7 @@ public class MockFileServiceImpl implements MockFileService {
         }
     }
 
-    public static void mockToJSON(String returnContentStr, JSONObject jsonObject, JSONObject viewContent) throws Exception {
+    public static void mockToJSON(String returnContentStr, JSONObject jsonObject, JSONObject viewContent) {
 
         String[] returnContentList = returnContentStr.split("\n");
         String startFlag = null;
@@ -289,8 +275,6 @@ public class MockFileServiceImpl implements MockFileService {
             }
             String contentType ;
             String contentName = contentParam[0].replace(" ", "").replace("\t", "");
-//            System.out.println(contentName);
-
 
             String fixedOrEnumValue = null;
             if (contentParam[1].contains("fixed")||contentParam[1].toLowerCase().contains("enum")){
@@ -304,7 +288,7 @@ public class MockFileServiceImpl implements MockFileService {
             if ("map".equals(contentType)) {
                 JSONObject tmp = new JSONObject();
                 JSONObject viewTmp = new JSONObject();
-                StringBuffer subMap = new StringBuffer();
+                StringBuilder subMap = new StringBuilder();
                 startFlag = getStartFlag(startFlag, returnContentList[i+1]);
                 for (int j=i+1;j<returnContentList.length;j++){
 
@@ -312,7 +296,7 @@ public class MockFileServiceImpl implements MockFileService {
                         break;
                     }
                     i=j;
-                    subMap.append(returnContentList[j].substring(startFlag.length())+"\n");
+                    subMap.append(returnContentList[j].substring(startFlag.length())).append("\n");
                 }
 
                 mockToJSON(subMap.toString() ,tmp, viewTmp);
@@ -322,7 +306,7 @@ public class MockFileServiceImpl implements MockFileService {
             }else if ("listMap".equals(contentType)){
                 JSONObject tmp = new JSONObject();
                 JSONObject viewTmp = new JSONObject();
-                StringBuffer subMap = new StringBuffer();
+                StringBuilder subMap = new StringBuilder();
                 startFlag = getStartFlag(startFlag, returnContentList[i+1]);
                 for (int j=i+1;j<returnContentList.length;j++){
 
@@ -330,7 +314,7 @@ public class MockFileServiceImpl implements MockFileService {
                         break;
                     }
                     i=j;
-                    subMap.append(returnContentList[j].substring(startFlag.length())+"\n");
+                    subMap.append(returnContentList[j].substring(startFlag.length())).append("\n");
                 }
                 mockToJSON(subMap.toString() ,tmp, viewTmp);
 
@@ -380,14 +364,11 @@ public class MockFileServiceImpl implements MockFileService {
                         jsonObject.put(contentName, "@dateTime");
                         viewContent.put(contentName, "");
                         break;
-                    case "fixed":
-                        jsonObject.put(contentName, fixedOrEnumValue);
-                        viewContent.put(contentName, fixedOrEnumValue);
-                        break;
                     case "ctitle":
                         jsonObject.put(contentName, "@ctitle");
                         viewContent.put(contentName, "");
                         break;
+                    case "fixed":
                     default:
                         jsonObject.put(contentName, fixedOrEnumValue);
                         viewContent.put(contentName, fixedOrEnumValue);
@@ -412,17 +393,13 @@ public class MockFileServiceImpl implements MockFileService {
     }
 
     public void addInterfaceParamAndReturnParam(List<SingleInterfaceDetailPo> interfaceDetailList){
-        new Thread(() -> {
-            interfaceDetailList.forEach(one-> {
-                addReturnContent(one.getInterfaceID(), one.getReturnJson().toJSONString(), one.getViewContent());
-                one.getParamsDetailPoList().forEach(param-> addParam(param.getParamName(), one.getInterfaceID(), param.isCheckNull()?"Y":"N", param.getNullReturn(), param.getParamType(), ""));
-            });
-        }).start();
+        new Thread(() -> interfaceDetailList.forEach(one-> {
+            addReturnContent(one.getInterfaceID(), one.getReturnJson().toJSONString(), one.getViewContent());
+            one.getParamsDetailPoList().forEach(param-> addParam(param.getParamName(), one.getInterfaceID(), param.isCheckNull()?"Y":"N", param.getNullReturn(), param.getParamType(), ""));
+        })).start();
     }
     public void addReturnContent(String interfaceID, String mockContent, String viewContent){
-        new Thread(() -> {
-            manifestMapper.addReturnContent(new ReturnContentPo(SecureUtil.md5(interfaceID+mockContent), interfaceID, mockContent, viewContent));
-        }).start();
+        new Thread(() -> manifestMapper.addReturnContent(new ReturnContentPo(SecureUtil.md5(interfaceID+mockContent), interfaceID, mockContent, viewContent))).start();
     }
     public void addParam(String paramName, String interfaceID, String checkNull, String nullReturn, String paramType, String mark){
         InterfaceParamsPo interfaceParamsPo = new InterfaceParamsPo(SecureUtil.md5(interfaceID+paramName), paramName, interfaceID, checkNull, nullReturn, paramType, mark);

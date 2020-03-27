@@ -20,13 +20,5 @@ public class ExceptionPlus extends Exception {
 	
 	private String message;
 
-	/**
-	 * 继承异常类，进行自己必要的格式整合
-	 * @return
-	 */
-	public String getMessagePlus (){
-		//to do
-		return this.getMessage();
-	}
 
 }

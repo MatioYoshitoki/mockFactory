@@ -3,16 +3,16 @@ package com.mock.customer.controller;
 import com.mock.common.exception.ExceptionPlus;
 import com.mock.common.pojo.JsonPublic;
 import com.mock.common.pojo.UserLoginInfo;
-import com.mock.common.pojo.UserPo;
 import com.mock.common.pojo.UserRegisterPo;
-import com.mock.customer.annotion.Permission;
 import com.mock.customer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Slf4j

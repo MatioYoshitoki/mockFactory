@@ -19,13 +19,13 @@ public class MockAop {
     SignVerification signVerification;
 
 
+
     String source = "MockFactoryCloud";//代表项目编号，一个项目组都要有一个统一的编号。系统将这个字符串转为首字母大写，其他小写的形式作为项目的标识。
 
 
     // 定义切入点
     @Pointcut("@annotation(com.mock.api.annotion.Permission)")
     public void checkAccess(){
-
     }
 
     @Around("checkAccess()")

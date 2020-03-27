@@ -1,24 +1,20 @@
 package com.mock.message.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.mock.common.global.CloudCode;
-import com.mock.common.global.CloudGlobal;
 import com.mock.common.pojo.JsonPublic;
 import com.mock.common.util.MyStrUtil;
+import com.mock.common.util.RedisUtil;
 import com.mock.message.configuration.MessageProperties;
 import com.mock.message.dao.UserMapper;
 import com.mock.message.service.MessageService;
 import com.mock.message.util.AliSendMS;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
 import javax.xml.ws.http.HTTPException;
-import java.io.IOException;
 
 /**
  * Created by matioyoshitoki on 2020/2/9.
@@ -34,7 +30,7 @@ public class MessageServiceImpl implements MessageService {
     MessageProperties messageProperties;
 
     @Override
-    public JsonPublic sendMsg(String phoneNo) throws HTTPException, IOException {
+    public JsonPublic sendMsg(String phoneNo) throws HTTPException {
         if (MyStrUtil.isEmail(phoneNo)){
             return new JsonPublic(CloudCode.NO_PHONE_NO, CloudCode.NO_PHONE_NO_MESSAGE, null);
         }
@@ -49,15 +45,7 @@ public class MessageServiceImpl implements MessageService {
         JSONObject templateParam = new JSONObject();
         templateParam.put("code", checkCode);
 
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-            jedis.setex(phoneNo,60*5, checkCode);
-        }finally {
-            if (jedis!=null){
-                jedis.close();
-            }
-        }
+        RedisUtil.pushToRedisEx(jedisPool, phoneNo, checkCode, 60*5);
 
         return AliSendMS.aliSendMS(messageProperties.getTemplateCode(), phoneNo, templateParam.toJSONString(), messageProperties.getSignName());
     }

@@ -11,6 +11,7 @@ import com.mock.common.pojo.UserLoginInfo;
 import com.mock.common.pojo.UserPo;
 import com.mock.common.pojo.UserRegisterPo;
 import com.mock.common.util.MyStrUtil;
+import com.mock.common.util.RedisUtil;
 import com.mock.customer.dao.UserMapper;
 import com.mock.customer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -58,8 +59,9 @@ public class UserServiceImpl implements UserService {
             throw new ExceptionPlus(CloudCode.WRONG_PASSWORD, CloudCode.WRONG_PASSWORD_MESSAGE);
         }
         String token = SecureUtil.md5(RandomUtil.randomString(32));
-        pushUserToRedis(user, token);
         user.setToken(token);
+
+        RedisUtil.pushToRedis(jedisPool, token, JSON.toJSONString(user));
         JsonPublic jsonPublic = new JsonPublic();
         jsonPublic.setData(user);
         return jsonPublic;
@@ -90,77 +92,35 @@ public class UserServiceImpl implements UserService {
             throw new ExceptionPlus(CloudCode.DIF_PASSWORD, CloudCode.DIF_PASSWORD_MESSAGE);
         }
 
-        Jedis jedis = null;
-
-        try {
-            jedis = jedisPool.getResource();
-            if (!checkCode.equals(jedis.get(phoneNo))){
+        try (Jedis jedis = jedisPool.getResource()) {
+            if (!checkCode.equals(jedis.get(phoneNo))) {
                 throw new ExceptionPlus(CloudCode.WRONG_CHECK_CODE, CloudCode.WRONG_CHECK_CODE_MESSAGE);
             }
             String tmp = userMapper.checkPhoneNo(phoneNo);
 
-            if (!StrUtil.isEmpty(tmp)){
+            if (!StrUtil.isEmpty(tmp)) {
                 throw new ExceptionPlus(CloudCode.USER_EXIST, CloudCode.USER_EXIST_MESSAGE);
             }
             password = SecureUtil.md5(password);
             userID = SecureUtil.md5(phoneNo);
             userMapper.addUser(userID, showName, phoneNo);
             userMapper.addPhoneUserLoginInfo(userID, phoneNo, password);
-        }finally {
-            if (jedis!=null) {
-                jedis.close();
-            }
         }
+
         String token = SecureUtil.md5(RandomUtil.randomString(32));
         UserPo user = new UserPo(userID, showName, defaultAvatar, token);
-        pushUserToRedis(user, token);
+
+        RedisUtil.pushToRedis(jedisPool, token, JSON.toJSONString(user));
         JsonPublic jsonPublic = new JsonPublic();
         jsonPublic.setData(user);
         return jsonPublic;
     }
 
     @Override
-    public JsonPublic tokenCheck(String token) throws ExceptionPlus {
+    public JsonPublic tokenCheck(String token) {
         JsonPublic jsonPublic = new JsonPublic();
-        jsonPublic.setData(getUserPoFromRedis(token));
+        jsonPublic.setData(RedisUtil.getFromRedis(jedisPool ,token, UserPo.class));
         return jsonPublic;
-    }
-
-    private void pushUserToRedis(UserPo user, String token) throws ExceptionPlus {
-        Jedis jedis = null;
-        try {
-            jedis = jedisPool.getResource();
-
-            String result = jedis.setex(token,60 * 60 * 7, JSON.toJSON(user).toString());
-            if (!"OK".equals(result)) {
-                throw new ExceptionPlus(CloudCode.SYSTEM_EXCEPTION_CODE, CloudCode.SYSTEM_EXCEPTION_MESSAGE);
-            }
-            result = jedis.set(user.getUserID(), token);
-            if (!"OK".equals(result)) {
-                throw new ExceptionPlus(CloudCode.SYSTEM_EXCEPTION_CODE, CloudCode.SYSTEM_EXCEPTION_MESSAGE);
-            }
-        }finally {
-            if (jedis!=null){
-                jedis.close();
-            }
-        }
-    }
-
-    private UserPo getUserPoFromRedis(String token) throws ExceptionPlus {
-        Jedis jedis = null;
-        UserPo userPo;
-        try {
-            jedis = jedisPool.getResource();
-            if (!jedis.exists(token)){
-                throw new ExceptionPlus(CloudCode.WRONG_TOKEN, CloudCode.WRONG_TOKEN_MESSAGE);
-            }
-            userPo = JSON.parseObject(jedis.get(token), UserPo.class);
-        }finally {
-            if (jedis!=null){
-                jedis.close();
-            }
-        }
-        return userPo;
     }
 
 }

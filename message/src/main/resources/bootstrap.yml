@@ -17,7 +17,6 @@ spring:
 
 
 management:
-  endpoint:
   endpoints:
     web:
       exposure:

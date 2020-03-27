@@ -16,13 +16,13 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
-public class JsonPublic<T> implements Serializable {
+public class JsonPublic implements Serializable {
 	//返回码
 	private int code;
 	//返回信息
 	private String message;
 	//返回的对象
-	private T data;
+	private Object data;
 
 	public JsonPublic(){
 		this.code = CloudCode.SUCCESS_CODE;
