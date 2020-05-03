@@ -1,4 +1,4 @@
-package com.mock.message.util;
+package com.mock.common.util;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
@@ -18,9 +18,9 @@ public class AliSendMS {
 
 
     public static JsonPublic aliSendMS(String templateCode, String mobile, String message, String signName) {
-
+        
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", CloudGlobal.ACCESS_KEY_ID, CloudGlobal.SECRET);
-        DefaultProfile.addEndpoint("cn-hangzhou", "Dysmsapi","cn-hangzhou");
+//        DefaultProfile.addEndpoint("cn-hangzhou", "Dysmsapi","cn-hangzhou");
 
         IAcsClient client = new DefaultAcsClient(profile);
         SendSmsRequest request = new SendSmsRequest();

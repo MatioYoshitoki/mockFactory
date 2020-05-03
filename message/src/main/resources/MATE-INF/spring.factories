@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.mock.message.configuration.JedisAutoConfiguration,\
+com.mock.message.configuration.MessageProperties

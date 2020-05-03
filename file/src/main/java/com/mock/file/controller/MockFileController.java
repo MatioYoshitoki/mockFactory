@@ -2,6 +2,7 @@ package com.mock.file.controller;
 
 import com.mock.common.pojo.JsonPublic;
 import com.mock.common.pojo.MockFilePo;
+import com.mock.common.util.ReturnUtil;
 import com.mock.file.service.MockFileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -23,7 +24,7 @@ public class MockFileController {
             @RequestBody MockFilePo mockFile,
             @PathVariable("token") String token
     ) throws Exception {
-        return mockFileService.getMockByFile(mockFile, token);
+        return ReturnUtil.makeSuccessReturn(mockFileService.getMockByFile(mockFile, token));
     }
 
 

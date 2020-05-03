@@ -1,5 +1,6 @@
 package com.mock.api.util;
 
+import cn.hutool.core.util.StrUtil;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -4,12 +4,12 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mock.common.exception.ExceptionPlus;
+import com.mock.common.exception.Assert;
+import com.mock.common.global.CacheNames;
 import com.mock.common.global.CloudCode;
 import com.mock.common.pojo.*;
 import com.mock.common.util.Base64Util;
 import com.mock.common.util.MyStrUtil;
-import com.mock.common.util.RedisUtil;
 import com.mock.file.dao.ManifestMapper;
 import com.mock.file.pojo.*;
 import com.mock.file.service.MockFileService;
@@ -20,6 +20,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisPool;
 
@@ -28,20 +29,20 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
 public class MockFileServiceImpl implements MockFileService {
 
     @Resource
-    JedisPool jedisPool;
-    @Resource
     ManifestMapper manifestMapper;
+    @Resource
+    RedisCacheManager redisCacheManager;
 
     @Override
     public String getMock(List<SingleInterfacePo> interfaceList, String manifestID, String port) throws Exception {
         List<SingleInterfaceDetailPo> interfaceDetailList = new ArrayList<>();
-
 
         String mockPath = null;
         for (SingleInterfacePo singleInterface: interfaceList) {
@@ -95,7 +96,7 @@ public class MockFileServiceImpl implements MockFileService {
     }
 
     @Override
-    public JsonPublic getMockByFile(MockFilePo mockFilePo, String token) throws ExceptionPlus {
+    public String getMockByFile(MockFilePo mockFilePo, String token) throws Exception {
 
         String fileBase64 = mockFilePo.getFile();
         String fileName = mockFilePo.getFileName();
@@ -104,73 +105,63 @@ public class MockFileServiceImpl implements MockFileService {
 
         String extString = fileName.substring(fileName.lastIndexOf("."));
 
-        UserPo userPo = RedisUtil.getFromRedis(jedisPool, token, UserPo.class);
-        if (userPo==null){
-            throw new ExceptionPlus(CloudCode.WRONG_TOKEN, CloudCode.WRONG_TOKEN_MESSAGE);
-        }
-
+        UserPo userPo = Objects.requireNonNull(redisCacheManager.getCache(CacheNames.USER_CACHE_NAME)).get(token, UserPo.class);
+        Assert.isNull(userPo, CloudCode.WRONG_TOKEN, CloudCode.WRONG_TOKEN_MESSAGE);
         InputStream is = Base64Util.base64ToInputStream(fileBase64);
 
+        Workbook wb;
         try {
-            Workbook wb;
             if (".xls".equals(extString)) {
                 wb = new HSSFWorkbook(is);
             } else if (".xlsx".equals(extString)) {
                 wb = new XSSFWorkbook(is);
             } else {
-                throw new Exception("文件格式错误");
+                throw new IllegalArgumentException("文件格式错误");
             }
-            Sheet sheet = wb.getSheetAt(0);
-            //获取sheet中，有数据的行数
-            int rowNum = sheet.getPhysicalNumberOfRows();
-            //因为模板是在第四行开始读取，那么我们的直接定位到第四行
-//            int count = 0;
-            List<SingleInterfacePo> singleInterfacePos = new ArrayList<>();
-            for (int i = 1; i < rowNum; i++) {
-                //获取当前行
-                Row row = sheet.getRow(i);
-                if (row != null) {
-
-                    Cell interfaceName = row.getCell(1);
-                    Cell requestURL = row.getCell(2);
-                    Cell interfaceType = row.getCell(3);
-                    Cell params = row.getCell(4);
-                    Cell returnContent = row.getCell(5);
-                    if (StrUtil.isEmpty(requestURL.getStringCellValue())){
-                        break;
-                    }
-                    if ("接口名称".equals(interfaceName.getStringCellValue())){
-                        continue;
-                    }
-
-                    SingleInterfacePo singleInterfacePo = new SingleInterfacePo();
-                    singleInterfacePo.setInterfaceName(interfaceName.getStringCellValue());
-                    singleInterfacePo.setParams((params.getStringCellValue().replace("\u2028", "\n")));
-                    singleInterfacePo.setReturnContent((returnContent.getStringCellValue().replace("\u2028", "\n")));
-                    singleInterfacePo.setRequestURL(requestURL.getStringCellValue());
-                    singleInterfacePo.setInterfaceType(interfaceType.getStringCellValue());
-                    log.info(singleInterfacePo.toString());
-                    singleInterfacePos.add(singleInterfacePo);
-                }
-                //遍历结束
-            }
-            ManifestPo manifestPo = new ManifestPo();
-            manifestPo.setGroupID("123");
-            manifestPo.setManifestName(manifestName+"("+port+")");
-            manifestPo.setPort(port);
-            manifestPo.setManifestID(SecureUtil.md5(manifestName+port));
-            manifestPo.setAuthorID(userPo.getUserID());
-            manifestMapper.addManifest(manifestPo);
-
-            String path = getMock(singleInterfacePos, manifestPo.getManifestID(), port);
-            JsonPublic jsonPublic = new JsonPublic();
-            jsonPublic.setData(path);
-            return jsonPublic;
-        }catch (Exception e){
-            e.printStackTrace();
+        }finally {
+            is.close();
         }
+        Sheet sheet = wb.getSheetAt(0);
+        int rowNum = sheet.getPhysicalNumberOfRows();
+        List<SingleInterfacePo> singleInterfacePos = new ArrayList<>();
+        for (int i = 1; i < rowNum; i++) {
+            //获取当前行
+            Row row = sheet.getRow(i);
+            if (row != null) {
 
-        return new JsonPublic();
+                Cell interfaceName = row.getCell(1);
+                Cell requestURL = row.getCell(2);
+                Cell interfaceType = row.getCell(3);
+                Cell params = row.getCell(4);
+                Cell returnContent = row.getCell(5);
+                if (StrUtil.isEmpty(requestURL.getStringCellValue())){
+                    break;
+                }
+                if ("接口名称".equals(interfaceName.getStringCellValue())){
+                    continue;
+                }
+
+                SingleInterfacePo singleInterfacePo = new SingleInterfacePo();
+                singleInterfacePo.setInterfaceName(interfaceName.getStringCellValue());
+                singleInterfacePo.setParams((params.getStringCellValue().replace("\u2028", "\n")));
+                singleInterfacePo.setReturnContent((returnContent.getStringCellValue().replace("\u2028", "\n")));
+                singleInterfacePo.setRequestURL(requestURL.getStringCellValue());
+                singleInterfacePo.setInterfaceType(interfaceType.getStringCellValue());
+                log.info(singleInterfacePo.toString());
+                singleInterfacePos.add(singleInterfacePo);
+            }
+            //遍历结束
+        }
+        ManifestPo manifestPo = new ManifestPo();
+        manifestPo.setGroupID("123");
+        manifestPo.setManifestName(manifestName+"("+port+")");
+        manifestPo.setPort(port);
+        manifestPo.setManifestID(SecureUtil.md5(manifestName+port));
+        manifestPo.setAuthorID(userPo.getUserID());
+        manifestMapper.addManifest(manifestPo);
+
+        return getMock(singleInterfacePos, manifestPo.getManifestID(), port);
+
     }
 
 

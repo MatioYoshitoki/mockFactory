@@ -1,6 +1,6 @@
 package com.mock.message.service;
 
-import com.mock.common.pojo.JsonPublic;
+import com.mock.common.exception.ExceptionPlus;
 
 import javax.xml.ws.http.HTTPException;
 import java.io.IOException;
@@ -10,6 +10,6 @@ import java.io.IOException;
  */
 public interface MessageService {
 
-    JsonPublic sendMsg(String phoneNo) throws HTTPException, IOException;
+    String sendMsg(String phoneNo) throws HTTPException, IOException, ExceptionPlus;
 
 }

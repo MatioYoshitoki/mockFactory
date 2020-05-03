@@ -1,6 +1,8 @@
 package com.mock.message.controller;
 
+import com.mock.common.exception.ExceptionPlus;
 import com.mock.common.pojo.JsonPublic;
+import com.mock.common.util.ReturnUtil;
 import com.mock.message.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,9 @@ public class MessageController {
     MessageService messageService;
 
     @GetMapping(value = "send/{phoneNo}")
-    public JsonPublic send(@PathVariable String phoneNo) throws IOException {
-        return messageService.sendMsg(phoneNo);
+    public JsonPublic send(@PathVariable String phoneNo) throws IOException, ExceptionPlus {
+        messageService.sendMsg(phoneNo);
+        return ReturnUtil.makeSuccessReturn();
     }
 
 }

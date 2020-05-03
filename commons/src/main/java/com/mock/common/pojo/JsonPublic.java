@@ -3,6 +3,7 @@ package com.mock.common.pojo;
 
 import com.mock.common.global.CloudCode;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
+@Data
 public class JsonPublic implements Serializable {
 	//返回码
 	private int code;
@@ -30,6 +32,7 @@ public class JsonPublic implements Serializable {
 	}
 
 	public JsonPublic(Exception e){
-		this(CloudCode.SYSTEM_EXCEPTION_CODE, CloudCode.SYSTEM_EXCEPTION_MESSAGE, null);
+		this(CloudCode.SYSTEM_EXCEPTION_CODE, CloudCode.SYSTEM_EXCEPTION_MESSAGE, e.getMessage());
 	}
+
 }

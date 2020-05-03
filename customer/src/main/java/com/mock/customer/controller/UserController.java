@@ -4,6 +4,7 @@ import com.mock.common.exception.ExceptionPlus;
 import com.mock.common.pojo.JsonPublic;
 import com.mock.common.pojo.UserLoginInfo;
 import com.mock.common.pojo.UserRegisterPo;
+import com.mock.common.util.ReturnUtil;
 import com.mock.customer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -24,35 +25,13 @@ public class UserController {
     UserService userService;
 
     @PostMapping("login")
-    public JsonPublic login(@RequestBody UserLoginInfo user){
-        try {
-            return userService.login(user);
-        } catch (ExceptionPlus exceptionPlus) {
-            exceptionPlus.printStackTrace();
-            log.error(user.toString()+"登录失败!");
-            return new JsonPublic(exceptionPlus);
-        }
+    public JsonPublic login(@RequestBody UserLoginInfo user) throws ExceptionPlus {
+        return ReturnUtil.makeSuccessReturn(userService.login(user));
     }
 
     @PostMapping(value = "/register")
-    public JsonPublic register(@RequestBody UserRegisterPo userRegister){
-        try {
-            return userService.register(userRegister);
-        } catch (ExceptionPlus exceptionPlus) {
-            exceptionPlus.printStackTrace();
-            return new JsonPublic(exceptionPlus.getCode(), exceptionPlus.getMessage(), null);
-        }
+    public JsonPublic register(@RequestBody UserRegisterPo userRegister) throws ExceptionPlus {
+        return ReturnUtil.makeSuccessReturn(userService.register(userRegister));
     }
-//
-//    @PostMapping(value = "/tokenCheck")
-//    @Permission
-//    public JsonPublic tokenCheck(@CookieValue("token") String token){
-//        try {
-//            return userService.tokenCheck(token);
-//        } catch (ExceptionPlus exceptionPlus) {
-//            exceptionPlus.printStackTrace();
-//            return new JsonPublic(exceptionPlus.getCode(), exceptionPlus.getMessage(), null);
-//        }
-//    }
 
 }

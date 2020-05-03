@@ -2,7 +2,6 @@ package com.mock.gateway.filter;
 
 
 import cn.hutool.core.date.DateUtil;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;

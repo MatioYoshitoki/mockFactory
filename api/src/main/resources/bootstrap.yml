@@ -8,9 +8,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: localhost:8848 #https://mockfactory.com
       config:
-        server-addr: localhost:8848
+        server-addr: localhost:8848 #https://mockfactory.com
         file-extension: yaml
         namespace: mock-factory-cloud
         group: API_GROUP
