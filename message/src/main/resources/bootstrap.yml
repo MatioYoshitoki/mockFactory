@@ -14,10 +14,13 @@ spring:
         namespace: mock-factory-cloud
         group: MESSAGE_GROUP
         prefix: mock-factory-message
-
+  rabbitmq:
+    host: http://mockfactory.com
+    port: 8333
 
 management:
   endpoints:
     web:
       exposure:
         include: '*'
+

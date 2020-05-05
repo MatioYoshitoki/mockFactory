@@ -31,6 +31,11 @@ public class JsonPublic implements Serializable {
 		this.message = CloudCode.SUCCESS_MESSAGE;
 	}
 
+	public JsonPublic(int code, String message){
+		this.code = code;
+		this.message = message;
+	}
+
 	public JsonPublic(Exception e){
 		this(CloudCode.SYSTEM_EXCEPTION_CODE, CloudCode.SYSTEM_EXCEPTION_MESSAGE, e.getMessage());
 	}

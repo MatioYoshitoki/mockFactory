@@ -28,4 +28,7 @@ public class CloudGlobal {
 	public static final String SMS_TOPIC = "message";
 	public static final String SMS_TAG = "tag";
 
+	public static final String SMS_ROUTE_KEY = "sms_message";
+
+	public static final String SMS_EXCHANGE = "sms.message";
 }
